@@ -1,0 +1,11 @@
+export type CampaignStatus="draft"|"active"|"paused"|"completed";
+export type OpportunityStage="new"|"qualified"|"proposal"|"won"|"lost";
+export type ActivityType="email"|"reply"|"call"|"meeting"|"note"|"task";
+export type WorkflowNodeType="trigger"|"find_companies"|"find_people"|"score_lead"|"personalize"|"send_email"|"wait"|"condition"|"crm_task";
+export type ICP={id:string;name:string;industry:string;location:string;employees:string;roles:string;keywords:string;updatedAt:string};
+export type Campaign={id:string;name:string;status:CampaignStatus;audienceSize:number;steps:number;sent:number;replies:number;meetings:number;updatedAt:string};
+export type Opportunity={id:string;company:string;contact:string;value:number;stage:OpportunityStage;updatedAt:string};
+export type Conversation={id:string;contact:string;company:string;intent:string;status:"open"|"human"|"closed";lastMessage:string;updatedAt:string};
+export type WorkflowNode={id:string;type:WorkflowNodeType;title:string;config:Record<string,unknown>};
+export type Workflow={id:string;name:string;status:"draft"|"active"|"paused";nodes:WorkflowNode[];updatedAt:string};
+export type AnalyticsEvent={id:string;type:string;entityId:string;metadata:Record<string,unknown>;createdAt:string};
