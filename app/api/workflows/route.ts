@@ -1,0 +1,5 @@
+import { NextResponse } from "next/server";
+import { store } from "@/lib/services/store-service";
+export async function GET(){return NextResponse.json({workflows:store.getWorkflows(),provider:"local"});}
+export async function POST(request:Request){const body=await request.json();const workflow=store.saveWorkflow({id:`wf-${Date.now()}`,name:String(body.name??"Untitled workflow"),status:"draft",nodes:Array.isArray(body.nodes)?body.nodes:[],updatedAt:new Date().toISOString()});return NextResponse.json({workflow},{status:201});}
+export async function PATCH(request:Request){const body=await request.json();const current=store.getWorkflows().find(x=>x.id===body.id);if(!current)return NextResponse.json({error:"Workflow not found"},{status:404});const workflow=store.saveWorkflow({...current,...(Array.isArray(body.nodes)?{nodes:body.nodes}:{}),...(typeof body.status==="string"?{status:body.status}:{}),updatedAt:new Date().toISOString()});return NextResponse.json({workflow});}
