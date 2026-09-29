@@ -1,0 +1,6 @@
+import { NextResponse } from "next/server";
+import { store } from "@/lib/services/store-service";
+import type { Campaign } from "@/lib/data/domain";
+export async function GET(){return NextResponse.json({campaigns:store.getCampaigns(),provider:"local"});}
+export async function POST(request:Request){const body=await request.json();const now=new Date().toISOString();const campaign:Campaign={id:`cmp-${Date.now()}`,name:typeof body.name==="string"&&body.name.trim()?body.name:"Untitled campaign",status:"draft",audienceSize:Number(body.audienceSize)||0,steps:Number(body.steps)||1,sent:0,replies:0,meetings:0,updatedAt:now};store.saveCampaign(campaign);store.addEvent({id:`evt-${Date.now()}`,type:"campaign_created",entityId:campaign.id,metadata:{name:campaign.name},createdAt:now});return NextResponse.json({campaign},{status:201});}
+export async function PATCH(request:Request){const body=await request.json();const current=store.getCampaigns().find(x=>x.id===body.id);if(!current)return NextResponse.json({error:"Campaign not found"},{status:404});const campaign=store.saveCampaign({...current,...(typeof body.status==="string"?{status:body.status}:{}),...(typeof body.steps==="number"?{steps:body.steps}:{}),updatedAt:new Date().toISOString()});return NextResponse.json({campaign});}
