@@ -1,4 +1,5 @@
 "use client";
+import type { ReactNode } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { BarChart3, Bot, Building2, GitBranch, Inbox, LayoutDashboard, Settings, Target, Users, Workflow } from "lucide-react";
@@ -16,7 +17,7 @@ const items=[
   ["/settings","Settings",Settings],
 ] as const;
 
-export function AppShell({children}:{children:React.ReactNode}){
+export function AppShell({children}:{children:ReactNode}){
  const pathname=usePathname();
  return <div className="min-h-screen bg-[#07111f] text-slate-100">
   <aside className="fixed inset-y-0 left-0 z-30 hidden w-64 border-r border-white/10 bg-[#081321] lg:block">
