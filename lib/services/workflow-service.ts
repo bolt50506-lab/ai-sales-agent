@@ -1,4 +1,6 @@
-import { findPeople, searchCompanies, scoreLead, personalizeLead } from "@/lib/services";
+import { findPeople } from "@/lib/services/lead-service";
+import { searchCompanies } from "@/lib/services/company-service";
+import { scoreLead, personalizeLead } from "@/lib/services/ai-service";
 import { mockEmailProvider } from "@/lib/providers";
 import type { Lead } from "@/lib/providers";
 import type { WorkflowNode } from "@/lib/data/domain";
