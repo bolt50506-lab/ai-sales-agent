@@ -1,29 +1,48 @@
 # AI Sales Agent
 
-An AI-powered sales intelligence, lead generation, outreach, inbox, CRM, and workflow automation platform.
+A provider-independent AI sales intelligence and outbound workspace built with Next.js, TypeScript, Tailwind and Supabase-ready architecture.
 
-## Status
+## Current local-first workspace
 
-Initial foundation — provider-independent architecture. External APIs will be integrated after the core product is complete.
+The application is usable without paid API keys and includes:
 
-## Product modules
+- Dashboard and workspace navigation
+- ICP builder
+- Company finder
+- Lead finder with AI scoring
+- Lead intelligence detail pages
+- Campaign builder with safe local test queue
+- AI inbox with human review flow
+- CRM pipeline
+- Workflow builder with local execution engine
+- Analytics workspace
+- Settings and provider registry
+- Provider interfaces for companies, people, AI, email, calendar and enrichment
+- API boundaries for company search, lead scoring, AI personalization, campaigns and workflows
 
-- Dashboard
-- ICP Builder
-- Company Finder
-- People / Lead Finder
-- Lead Intelligence & Scoring
-- Campaigns
-- AI Inbox / Reply Agent
-- CRM
-- Workflow Builder
-- Analytics
-- Integrations
+## Provider architecture
 
-## Architecture principle
+External services are isolated behind interfaces in `lib/providers`. Mock implementations run locally now; real providers can replace them without rewriting the product workflows.
 
-All external data, enrichment, AI, email, calendar, and automation services are accessed through provider interfaces. Development can therefore run with local/mock providers and real APIs can be added later without redesigning the application.
+## Run locally
 
-## Development
+```bash
+npm install
+npm run dev
+```
 
-The application is being built incrementally, with each module kept independently replaceable and testable.
+Then open `http://localhost:3000`.
+
+No external provider key is required for the current local-first mode.
+
+## Product areas
+
+Dashboard · ICP · Companies · Leads · Campaigns · Inbox · CRM · Workflows · Analytics · Integrations/Settings
+
+## Safety model
+
+Local outbound execution is review-only. Provider secrets belong on the server when real integrations are added.
+
+## Next integration layer
+
+Supabase persistence/auth, real AI providers, company/enrichment providers, email delivery, calendar integrations and automation connectors can be added behind the existing provider contracts.
