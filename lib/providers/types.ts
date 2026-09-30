@@ -1,3 +1,7 @@
+export type ProviderStatus = "mock" | "configured" | "disabled" | "error";
+export type ProviderCapability = "companies" | "people" | "enrichment" | "ai" | "email" | "calendar";
+export type ProviderHealth = { id:string; name:string; capability:ProviderCapability; status:ProviderStatus; configured:boolean };
+
 export type Company={id:string;name:string;domain:string;industry:string;location:string;employees:number;description:string;source:string};
 export type Person={id:string;companyId:string;name:string;title:string;email:string|null;linkedin:string|null;source:string};
 export type Lead=Person&{score:number;status:"new"|"qualified"|"contacted"|"replied"};
