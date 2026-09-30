@@ -9,10 +9,11 @@ async function context(): Promise<Ctx> {
   const { data: member, error } = await supabase.from("workspace_members").select("workspace_id").eq("user_id", user.id).limit(1).maybeSingle();
   if (error) throw error;
   if (member?.workspace_id) return { supabase, userId:user.id, workspaceId:member.workspace_id };
-  const { data: ws, error: wsError } = await supabase.from("workspaces").insert({name:"My Sales Workspace",slug:`workspace-${user.id.slice(0,8)}`,created_by:user.id}).select("id").single();
+  const workspaceId = crypto.randomUUID();
+  const { error: wsError } = await supabase.from("workspaces").insert({id:workspaceId,name:"My Sales Workspace",slug:`workspace-${user.id.slice(0,8)}`,created_by:user.id});
   if (wsError) throw wsError;
-  const { error: mError } = await supabase.from("workspace_members").insert({workspace_id:ws.id,user_id:user.id,role:"owner"}); if (mError) throw mError;
-  return { supabase,userId:user.id,workspaceId:ws.id };
+  const { error: mError } = await supabase.from("workspace_members").insert({workspace_id:workspaceId,user_id:user.id,role:"owner"}); if (mError) throw mError;
+  return { supabase,userId:user.id,workspaceId };
 }
 const local=<T,>(value:T)=>({value,provider:"local" as const});
 const split=(v:string)=>v.split(",").map(x=>x.trim()).filter(Boolean);
