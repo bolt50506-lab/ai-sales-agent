@@ -1,14 +1,3 @@
-import { NextResponse } from "next/server";
-import { store } from "@/lib/services/store-service";
-
-export async function GET() {
-  return NextResponse.json({ conversations: store.getConversations(), provider: "local" });
-}
-export async function POST(request: Request) {
-  const body = await request.json();
-  const current = store.getConversations().find(x=>x.id===body.id);
-  if (!current) return NextResponse.json({error:"Conversation not found"},{status:404});
-  const updated = store.saveConversation({...current,status:body.human?"human":current.status,lastMessage:typeof body.message==="string"?body.message:current.lastMessage,updatedAt:new Date().toISOString()});
-  store.addEvent({id:`evt-${Date.now()}`,type:body.human?"human_takeover":"reply_sent",entityId:updated.id,metadata:{channel:"inbox"},createdAt:new Date().toISOString()});
-  return NextResponse.json({conversation:updated,mode:"review-only"});
-}
+import { NextResponse } from "next/server";import { store } from "@/lib/services/store-service";
+export async function GET(){const r=await store.getConversations();return NextResponse.json({conversations:r.value,provider:r.provider});}
+export async function POST(request:Request){const b=await request.json();const c=(await store.getConversations()).value.find(x=>x.id===b.id);if(!c)return NextResponse.json({error:"Conversation not found"},{status:404});const r=await store.saveConversation({...c,status:b.human?"human":c.status,lastMessage:typeof b.message==="string"?b.message:c.lastMessage,updatedAt:new Date().toISOString()});await store.addEvent({id:`evt-${Date.now()}`,type:b.human?"human_takeover":"reply_sent",entityId:r.value.id,metadata:{channel:"inbox"},createdAt:new Date().toISOString()});return NextResponse.json({conversation:r.value,provider:r.provider,mode:"review-only"});}
