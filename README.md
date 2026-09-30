@@ -33,7 +33,11 @@ npm run dev
 
 Then open `http://localhost:3000`.
 
-No external provider key is required for the current local-first mode.
+No external provider key is required for the local provider mode.
+
+## Supabase persistence
+
+The app now supports Supabase-backed persistence for authenticated workspaces. Copy `.env.example` to `.env.local` and set `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` from the Sales Agent Supabase project. Open `/login`, create/sign in to an account, and the app automatically creates a private workspace for the user. Without a Supabase session, the existing local mock store remains available.
 
 ## Product areas
 
